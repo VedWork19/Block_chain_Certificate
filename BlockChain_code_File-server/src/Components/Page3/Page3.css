@@ -1,0 +1,195 @@
+.Page3 {
+    width: 48%;
+    margin: 3% auto;
+    
+}
+.Page3 .File .body{
+    box-shadow: -5px -1px 58px -17px rgba(0,0,0,0.29);
+    -webkit-box-shadow: -5px -1px 58px -17px rgba(0,0,0,0.29);
+    -moz-box-shadow: -5px -1px 58px -17px rgba(0,0,0,0.29);
+    height: 650px;
+    padding: 30px;
+    padding-top:20px;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.Page3 .File .body h3 {
+    width:50%;
+    font-size: 1.8rem;
+    text-align:center;
+}
+.Page3 .File .bottom .btn{
+    background-color:#AACC00 ;
+    font-size:1.2rem;
+    border-radius:15px;
+    width: 100px;
+}
+.Page3 button{
+    background-color:#AACC00 ;
+    font-size: 1.4rem;
+    width: 110px;
+    height: 50px;
+    border-radius:15px;
+
+    margin: 1% auto;
+}
+.details_h3{
+  color:#AACC00;
+}
+
+.Page3 .File .body input{
+    margin:0 10px;
+    border-radius: 10px;
+    padding: 5px;
+}
+.detail_bar{
+  width:60%;
+  height:7px;
+  border-radius:10px;
+  background-color:#AACC00;
+}
+
+    /* label color */
+    .Page3  .input-field label {
+    color: #000;
+  }
+  /* label focus color */
+  .Page3  .input-field input[type=text]:focus + label {
+    color: #AACC00;
+  }
+  /* label underline focus color */
+  .Page3 .input-field input[type=text]:focus {
+    border-bottom: 1px solid #AACC00;
+    box-shadow: 0 1px 0 0 #AACC00;
+  }
+  /* valid color */
+  .Page3  .input-field input[type=text].valid {
+    border-bottom: 1px solid #AACC00;
+    box-shadow: 0 1px 0 0 #AACC00;
+  }
+  /* invalid color */
+  .Page3  .input-field input[type=text].invalid {
+    border-bottom: 1px solid rgb(208, 87, 87);
+    box-shadow: 0 1px 0 0 rgb(208, 87, 87);
+  }
+  /* icon prefix focus color */
+  .Page3  .input-field .prefix.active {
+    color: #000;
+  }
+  
+.uploading_file{
+  background-color:#fff;
+  opacity:.9;
+  width:100% ;
+  height:110%;
+  position:absolute;
+  z-index:10;
+  display:none;
+
+
+}
+.file_upload_notification{
+  width:100% ;
+  /* top:100px; */
+  left:80px;
+  background-color:#fff;
+  color:#AACC00;
+  display: flex;
+  justify-content: space-evenly;
+  align-items:center;
+  
+}
+.file_upload_notification_error{
+  width:100% ;
+  left:80px;
+  background-color:#fff;
+  color:#ec3e12;
+  display: flex;
+  justify-content: space-evenly;
+  align-items:center;
+}
+.file_upload_notification span{
+  margin-left:7px;
+  margin-right:7px;
+}
+.uploading_file .loading{
+  display: flex;
+  justify-content: center;
+  /* align-items:center; */
+  margin-top: 18%;
+  width:100% ;
+  height:100%;
+}
+.uploading_file .loading .circle{
+  border-color: #AACC00;
+}
+  /* number */
+
+    .input-field input[type=number]:focus + label {
+    color: #AACC00;
+  }
+  /* label underline focus color */
+   .input-field input[type=number]:focus {
+    border-bottom: 1px solid #AACC00;
+    box-shadow: 0 1px 0 0 #AACC00;
+  }
+
+
+   .input-field input[type=number]:focus {
+    border-bottom: 1px solid #AACC00;
+    box-shadow: 0 1px 0 0 #AACC00;
+  }
+  /* valid color */
+    .input-field input[type=number].valid {
+    border-bottom: 1px solid #AACC00;
+    box-shadow: 0 1px 0 0 #AACC00;
+  }
+  /* invalid color */
+    .input-field input[type=number].invalid {
+    border-bottom: 1px solid rgb(208, 87, 87);
+    box-shadow: 0 1px 0 0 rgb(208, 87, 87);
+  }
+
+
+
+  /* date */
+
+   .input-field input[type=date]:focus + label {
+    color: #AACC00;
+  }
+  /* label underline focus color */
+  .input-field input[type=date]:focus {
+    border-bottom: 1px solid #AACC00;
+    box-shadow: 0 1px 0 0 #AACC00;
+  }
+
+   .input-field input[type=date]:focus {
+    border-bottom: 1px solid #AACC00;
+    box-shadow: 0 1px 0 0 #AACC00;
+  }
+  /* valid color */
+   .input-field input[type=date].valid {
+    border-bottom: 1px solid #AACC00;
+    box-shadow: 0 1px 0 0 #AACC00;
+  }
+  /* invalid color */
+    .input-field input[type=date].invalid {
+    border-bottom: 1px solid rgb(208, 87, 87);
+    box-shadow: 0 1px 0 0 rgb(208, 87, 87);
+  }
+
+  @media screen and (max-width:800px){
+   .Page3 {
+      width: 65%;
+    }
+  }
+
+  @media screen and (max-width:500px){
+    .Page3 {
+       width: 80%;
+     }
+   }
