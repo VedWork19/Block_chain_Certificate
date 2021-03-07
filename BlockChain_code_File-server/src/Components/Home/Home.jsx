@@ -72,8 +72,8 @@ const Home =()=>{
                 setProgess(progress);
             }
         }).then(res => {
-                setFile("");
-                setFile2("")
+                // setFile("");
+                // setFile2("")
             console.log(res)
             if(res.data.success){
                 load.style.display="none"
@@ -131,8 +131,8 @@ const Home =()=>{
             
         }).catch(err => 
             {
-                setFile("");
-                setFile2("")
+                // setFile("");
+                // setFile2("")
                 let load=document.querySelector("#load_fileIn.uploading_file");
                 load.style.display="none";
                 M.toast({html:`

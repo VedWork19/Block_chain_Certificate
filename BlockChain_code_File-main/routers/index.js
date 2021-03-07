@@ -20,13 +20,13 @@ const provider = new HDWalletProvider(
     const deploy = async (filehash,data,datas,gets,res,next) => {
 
         try{
-            let condition=false;
+            
             let tot=1;
           await gets.map((d,i)=>{
                 if(d!=undefined){
                     datas.map((In,index)=>{
                         if(d.name==In[`Certificate_Name`]){
-                            condition=true
+                            
                             tot=tot+1
                         }
                     })
@@ -35,7 +35,7 @@ const provider = new HDWalletProvider(
                 
             })
             
-            if(condition && tot==gets.length){
+            if( tot==gets.length){
                 gets.map(async (d,i)=>{
 
                     if(d!=undefined){
@@ -44,8 +44,7 @@ const provider = new HDWalletProvider(
                         console.log(namePdf,data[`Certificate_Name`]);
                        if(namePdf==data[`Certificate_Name`]){
 
-                        console.log(namePdf,"name",data[`Certificate_Name`],"certificate",true);
-                        console.log(namePdf==data[`Certificate_Name`],"check the pdf true",true);
+                        
 
                         const accounts = await web3.eth.getAccounts();
                         console.log('account address ', accounts[0]);
@@ -79,32 +78,35 @@ const provider = new HDWalletProvider(
                              }
                          
                  
-                                 await Certificate.create(get);
-                                console.log(i==0,"Check te codition is loop running in reverce order",i);
-                                 if(i==0){
-                                     console.log("runned",i);
-                                    const resultEmail=await Email.findOne({
-                                        where: {send_date:moment().format('YYYY-MM-DD')}
-                                    });
-                                    console.log("my date is ",resultEmail);
+                                let gotHere= await Certificate.create(get);
+                                console.log(i+1,"asdasdasda",gets.length-1);
+                                if(gotHere){
+                                 if(i+1==gets.length-1){
+
+                                    //  console.log("runned",i);
+                                    // const resultEmail=await Email.findOne({
+                                    //     where: {send_date:moment().format('YYYY-MM-DD')}
+                                    // });
+                                    // console.log("my date is ",resultEmail);
                                    
-                                    if(resultEmail!=null||resultEmail!=[]){
+                                    // if(resultEmail!=null||resultEmail!=[]){
                         
-                                        let newCount=resultEmail.send_count+gets.length-1
+                                    //     let newCount=resultEmail.send_count+gets.length-1
                                        
-                                        const Email_Modify=await Email.update(
-                                            {
-                                                send_count:newCount
-                                            },{returning: true,
-                                                where:{send_date:moment().format('YYYY-MM-DD')}
-                                            })
+                                    //     const Email_Modify=await Email.update(
+                                    //         {
+                                    //             send_count:newCount
+                                    //         },{returning: true,
+                                    //             where:{send_date:moment().format('YYYY-MM-DD')}
+                                    //         })
                                     
-                                    }
+                                    // }
                                     return res.status(201).json({
                                         success:true,
                                         message:"Uploaded Successfully"
                                     })
                                 }
+                            }
             
                       //--------------------------
                       
@@ -189,7 +191,7 @@ const provider = new HDWalletProvider(
 
     // XLSX npm data extraction function
 const dataExtract= async (file)=>{
-    const workbook= XLSX.readFile(`${__dirname}/../../BlockChain_code_File-server/src/Files/excel/${file}`);
+    const workbook= XLSX.readFile(`${__dirname}/../public/excel/${file}`);
     var data = [];
     var info=null;
     var sheet_name_lists  = workbook.SheetNames;
@@ -280,78 +282,88 @@ router.get("/verify/:id",async (req,res)=>{
 router.post('/tutor/upload/files',async (req, res,next) => {
     try{ 
         // console.log(req.files,"sdfghjk")
-            const No_of_certificates=JSON.parse(req.body.data);
-            // console.log(No_of_certificates);
-           if (!req.files) {
-                return res.status(500).json({ msg: "file is not found" })
-            }
-            let checkPdf= await dataExtract(req.files.file.name);
-            
-    
-
-    let allPdfs=Object.keys(req.files).map((key)=>{
-        if(key!="file"){
-            return req.files[key]
-        }
-    })
-
-    
-
-    console.log(checkPdf);
-    console.log("no :    ",No_of_certificates,allPdfs.length-1,checkPdf.length);
-    if(No_of_certificates!=allPdfs.length-1){
-        return res.status(200).json({ msg: "Kindly check the inputs you have passed" });
-    }  if(No_of_certificates!=checkPdf.length){
-        
-        return res.status(200).json({ msg: "Kindly check the inputs you have passed" });
-    }
-    if(allPdfs.length-1!=checkPdf.length){
-        return res.status(200).json({ msg: "Kindly check the inputs you have passed" });
-    }
-    
-
-    allPdfs.map((get,index)=>{
-
-        
-        
-        if(allPdfs.length!=index+1){
-            
-            req.files.file.mv(`${__dirname}/../../BlockChain_code_File-server/public/Files/pdf/${get.name}`,async function (err) {
-                    if (err) {
-                        console.log(err)
-                        return res.status(500).send({ msg: "Error occured" });
-                    }
+                            const No_of_certificates=JSON.parse(req.body.data);
+                            // console.log(No_of_certificates);
+                        if (!req.files) {
+                                return res.status(500).json({ msg: "file is not found" })
+                            }
+                            
+                            
                     
-                    
-                req.files.file.mv(`${__dirname}/../../BlockChain_code_File-server/public/Files/excel/${req.files.file.name}`,async function (err) {
-                        if (err) {
-                            console.log(err)
-                            return res.status(500).send({ msg: "Error occured" });
+
+                    let allPdfs=Object.keys(req.files).map((key)=>{
+                        if(key!="file"){
+                            return req.files[key]
                         }
-                        console.log("saved excel");
-
                     })
-                }) 
-        }
-        
-    });
+
     
+    // save the file and no of files verify
+
+    let checkPdf=[];
+                        req.files.file.mv(`${__dirname}/../public/excel/${req.files.file.name}`,async function (err) {
+                            if (err) {
+                                console.log(err)
+                                return res.status(500).send({ msg: "Error occured" });
+                            }
+                            allPdfs.map(async (get,index)=>{
+
+                            
+
+                                 checkPdf= await dataExtract(req.files.file.name);
+                                
+                                console.log(checkPdf,"checkeclsnfksdjnfkjsdnf");
+                                if(No_of_certificates!=allPdfs.length-1){
+                                    return res.status(200).json({ msg: "Kindly check the inputs you have passed" });
+                                }  if(No_of_certificates!=checkPdf.length){
+                                    
+                                    return res.status(200).json({ msg: "Kindly check the inputs you have passed" });
+                                }
+                                if(allPdfs.length-1!=checkPdf.length){
+                                    return res.status(200).json({ msg: "Kindly check the inputs you have passed" });
+                                }
+                            
+                            
+                            if(allPdfs.length!=index+1){
+                                
+                                req.files.file.mv(`${__dirname}/../public/Pdfs/${get.name}`,async function (err) {
+                                        if (err) {
+                                            console.log(err)
+                                            return res.status(500).send({ msg: "Error occured" });
+                                        }
+                                        
+
+                                        })
+                                    
+                                    
+                                    }
+                                    console.log(allPdfs.length,"asdasdasdsadasd",index+1);
+                                    if(allPdfs.length==index+1){
+                                        let data= await dataExtract(req.files.file.name);
+                                            console.log(data,"check 2");
+                                            data.map(async (d,index)=>{
+                                            
+                                        
+                                            let hashCertificate= await sha256.sha256(allPdfs[index].name);
+                                            // block chain function
+                                            console.log(hashCertificate,"7")
+                                         let gogo=  await deploy(hashCertificate, d  , data ,  allPdfs,res,next);
+                                        
+                                        })
+                                       
+                                }
+                                
+                            
+                                });
+                        
 
 
-                    
+                            }) 
+            // save the file and no of files verify
+                                
+                     
                         
-                        let data= await dataExtract(req.files.file.name);
                         
-            
-                        data.map(async (d,index)=>{
-                           
-                           
-                            let hashCertificate= await sha256.sha256(allPdfs[index].name);
-                            // block chain function
-                            console.log(hashCertificate,"7")
-                            await deploy(hashCertificate, d  , data ,  allPdfs,res,next);
-                           
-                        })
                         
 
     

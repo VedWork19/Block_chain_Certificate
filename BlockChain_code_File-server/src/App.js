@@ -23,7 +23,6 @@ function App() {
         <Nav2/>
         <Page3/>
       </Route>
-   
     <Foot/>  
     </BrowserRouter>
   );

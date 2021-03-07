@@ -89,10 +89,10 @@ const Page2=()=>{
     }
     useEffect( ()=>{
     
-console.log(user.certificate_location);
+
         
         fetchData()
-        
+        console.log(user.pdf_location);
     },[])
     const Click=()=>{
 
@@ -140,7 +140,7 @@ const showVerification=(condition)=>{
       
       <div class="div1 card ">
 
-         {user?<ShowFile url={user.certificate_location} />:<h4>Certificate will be displayed here</h4>}
+         {user?<ShowFile url={user.pdf_location} />:<h4>Certificate will be displayed here</h4>}
           
           
       </div>
@@ -153,11 +153,15 @@ const showVerification=(condition)=>{
               
               <div>
               <h3>Issued</h3>
-              <h4>{user?user.staff_name:"NO"}</h4>
+              <h4>{user?user.stuff_name:"NO"}</h4>
               </div>
               <div>
               <h3>Trainer Name</h3>
               <h4>{user?user.batch_trainer:"NO"}</h4>
+              </div>
+              <div>
+              <h3>Training  code</h3>
+              <h4>{user?user.training_code:"NO"}</h4>
               </div>
               <div>
               <h3>Batch Code</h3>
@@ -165,7 +169,7 @@ const showVerification=(condition)=>{
               </div>
               <div>
               <h3>Batach Duration</h3>
-              <h4> {user?user.batch_duration:"NO"}</h4>
+              <h4> {user?user.batch_start_date:"NO"}</h4>
               </div>
               <div>
               <h3>Transsaction ID</h3>

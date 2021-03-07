@@ -1,12 +1,28 @@
 import React, { useState ,useEffect} from 'react'; 
 import { Document, Page,pdfjs } from "react-pdf"; 
+import url1 from "../../Files/pdf/certificate.pdf"  
 import "./showFile.css";  
-
-
+const hereIs=`http://game.oyesters.in/EC-353-TCPIP-Mid%20Exam%20March%202021-OPM.pdf`
 export default function Test(params) { 
+      
+  const downloadCertificate=()=>{
+    console.log("kela kela",__dirname,params.url);
+    //creating an invisible element 
+    var element = document.createElement('a'); 
+    element.setAttribute('href',  
+    'data:text/plain;charset=utf-8, ' 
+    + encodeURIComponent(`../../Files/pdf/${params.url}`)); 
+    element.setAttribute('download', "test.pdf"); 
   
     
   
+    document.body.appendChild(element); 
+  
+
+    element.click(); 
+  
+    document.body.removeChild(element); 
+  }
   pdfjs.GlobalWorkerOptions.workerSrc =  
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`; 
   const [numPages, setNumPages] = useState(null); 
@@ -23,8 +39,17 @@ export default function Test(params) {
     setPageNumber(1); 
   } 
   
-
+  function changePage(offset) { 
+    setPageNumber(prevPageNumber => prevPageNumber + offset); 
+  } 
   
+  function previousPage() { 
+    changePage(-1); 
+  } 
+  
+  function nextPage() { 
+    changePage(1); 
+  } 
 
   useEffect(()=>{
     // console.log(`../../Files/pdf/${url}`)
@@ -34,13 +59,13 @@ export default function Test(params) {
     <> 
     <div className="main showFile"> 
       <Document 
-        file={`/Files/Pdf/${params.url}`}
+        file={url1}
         onLoadSuccess={onDocumentLoadSuccess} 
       > 
         <Page pageNumber={pageNumber} /> 
       </Document> 
       <div className="buttonIsShow">
-          <button onClick={()=>{}} className="btn icon_btn"><a  href={`/Files/Pdf/${params.url}`} target="_blank" download><i className="large material-icons">get_app</i><a  type="button">Download pdf</a></a></button>
+          <button onClick={()=>{/*downloadCertificate()*/}} className="btn icon_btn"><a  href={hereIs} target="_blank" download="pdf"><i className="large material-icons">get_app</i><a  type="button">Download pdf</a></a></button>
       </div>
       </div> 
     </> 
