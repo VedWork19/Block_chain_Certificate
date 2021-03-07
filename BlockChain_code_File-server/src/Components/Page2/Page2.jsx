@@ -33,6 +33,7 @@ const style={
 const Page2=()=>{
     
     const string=useParams()
+    const [path,setPath]=useState("")
     const [user,setUser]=useState({});
     const [conditionIs,setCondition]=useState(false);
     
@@ -42,7 +43,7 @@ const Page2=()=>{
             const data= await axios.get(`${window.location.protocol}//${window.location.hostname}:5000/data/${string.string}`);
         if(data){
             setUser(data.data.data)
-            
+            setPath(data.data.path)
             // console.log(data.d ata.data)   
             }
         } 
@@ -92,7 +93,7 @@ const Page2=()=>{
 
         
         fetchData()
-        console.log(user.pdf_location);
+        console.log(path);
     },[])
     const Click=()=>{
 
@@ -140,7 +141,7 @@ const showVerification=(condition)=>{
       
       <div class="div1 card ">
 
-         {user?<ShowFile url={user.pdf_location} />:<h4>Certificate will be displayed here</h4>}
+         {user?<ShowFile url={path} />:<h4>Certificate will be displayed here</h4>}
           
           
       </div>
@@ -153,30 +154,27 @@ const showVerification=(condition)=>{
               
               <div>
               <h3>Issued</h3>
-              <h4>{user?user.stuff_name:"NO"}</h4>
+              <h4>{user?user.staff_name:"NO"}</h4>
               </div>
               <div>
               <h3>Trainer Name</h3>
               <h4>{user?user.batch_trainer:"NO"}</h4>
               </div>
-              <div>
-              <h3>Training  code</h3>
-              <h4>{user?user.training_code:"NO"}</h4>
-              </div>
+            
               <div>
               <h3>Batch Code</h3>
               <h4> {user?user.batch_code:"NO"}</h4>
               </div>
               <div>
-              <h3>Batach Duration</h3>
-              <h4> {user?user.batch_start_date:"NO"}</h4>
+              <h3>Batch Duration</h3>
+              <h4> {user?user.batch_duration:"NO"}</h4>
               </div>
               <div>
-              <h3>Transsaction ID</h3>
+              <h3>Transsaction Hash</h3>
               <p style={{width:"500px",textAlign:"left"}}>{user?user.transaction_hash:"NO"}</p>
               </div>
               <div>
-              <h3>Hash</h3>
+              <h3>Certificate Hash</h3>
               <p style={{width:"500px",textAlign:"left"}}>{user?user.certificate_hash:"NO"}</p>
               </div>
           </div>

@@ -15,6 +15,30 @@ const provider = new HDWalletProvider(
     'https://rinkeby.infura.io/v3/1ec6558c6dba4a9db1ab5f5b647d9a60'
     );
     
+let todayIs=moment().format("YYYY-MM-DD")
+    
+const createDate= async()=>{
+    console.log(todayIs);
+    try{
+        const date=await Email.findOne({
+            where:{send_date:todayIs}
+          })
+          if(date==null){
+              const makeDate=await Email.create({
+                  send_Date:todayIs
+              })
+          }
+          
+    }
+    catch(e){
+        console.log(e);
+    }
+  
+  }
+  createDate()
+
+
+
     const web3 = new Web3(provider);
     // blockchain deploy for multiple pdfs 
     const deploy = async (filehash,data,datas,gets,res,next) => {
@@ -83,24 +107,24 @@ const provider = new HDWalletProvider(
                                 if(gotHere){
                                  if(i+1==gets.length-1){
 
-                                    //  console.log("runned",i);
-                                    // const resultEmail=await Email.findOne({
-                                    //     where: {send_date:moment().format('YYYY-MM-DD')}
-                                    // });
-                                    // console.log("my date is ",resultEmail);
+                                     console.log("runned",i);
+                                    const resultEmail=await Email.findOne({
+                                        where: {send_date:todayIs}
+                                    });
+                                    console.log("my date is ",resultEmail);
                                    
-                                    // if(resultEmail!=null||resultEmail!=[]){
+                                    if(resultEmail!=null||resultEmail!=[]){
                         
-                                    //     let newCount=resultEmail.send_count+gets.length-1
+                                        let newCount=resultEmail.send_count+gets.length-1
                                        
-                                    //     const Email_Modify=await Email.update(
-                                    //         {
-                                    //             send_count:newCount
-                                    //         },{returning: true,
-                                    //             where:{send_date:moment().format('YYYY-MM-DD')}
-                                    //         })
+                                        const Email_Modify=await Email.update(
+                                            {
+                                                send_count:newCount
+                                            },{returning: true,
+                                                where:{send_date:todayIs}
+                                            })
                                     
-                                    // }
+                                    }
                                     return res.status(201).json({
                                         success:true,
                                         message:"Uploaded Successfully"
@@ -236,6 +260,8 @@ const dataExtract= async (file)=>{
 
 router.get("/verify/:id",async (req,res)=>{
 
+    createDate()
+
     let check= await  DataCheck(req.params.id);
     let data= await Certificate.findOne({
             where: {certificate_hash:req.params.id}
@@ -246,7 +272,7 @@ router.get("/verify/:id",async (req,res)=>{
     // console.log(check==data.certificate_hash);
     // console.log(data.certificate_hash,"db");
     const resultEmail=await Email.findOne({
-        where: {send_date:moment().format('YYYY-MM-DD')}
+        where: {send_date:todayIs}
     });
     // console.log(resultEmail,"result");
     if(resultEmail!=null||resultEmail!=[]){
@@ -255,7 +281,7 @@ router.get("/verify/:id",async (req,res)=>{
             {
                 verify_count:newCount
             },{returning: true,
-                where:{send_date:moment().format('YYYY-MM-DD')}
+                where:{send_date:todayIs}
             })
         // )
         console.log(Email_Modify,"updated view");
@@ -280,6 +306,7 @@ router.get("/verify/:id",async (req,res)=>{
 
 // multipe file upload route
 router.post('/tutor/upload/files',async (req, res,next) => {
+    createDate()
     try{ 
         // console.log(req.files,"sdfghjk")
                             const No_of_certificates=JSON.parse(req.body.data);
@@ -379,6 +406,7 @@ router.post('/tutor/upload/files',async (req, res,next) => {
 
 // single file upload route
 router.post("/tutor/upload/file",async(req,res)=>{
+    createDate()
     try{
 
 
@@ -399,7 +427,7 @@ router.post("/tutor/upload/file",async(req,res)=>{
         }
 
         // save pdf file
-        myfile.mv(`${__dirname}/../../BlockChain_code_File-server/public/Files/pdf/${myfile.name}`,async (err)=>{
+        myfile.mv(`${__dirname}/../public/Pdfs/${myfile.name}`,async (err)=>{
                     if(err){
                         console.log(err)
                         return res.status(400).send({ msg: "Error occured" });
@@ -407,7 +435,7 @@ router.post("/tutor/upload/file",async(req,res)=>{
                     await deploy2(hashCertificate,allData);
 
                     const resultEmail=await Email.findOne({
-                        where: {send_date:moment().format('YYYY-MM-DD')}
+                        where: {send_date:todayIs}
                     });
                     // console.log(resultEmail,"result");
                     if(resultEmail!=null||resultEmail!=[]){
@@ -416,7 +444,7 @@ router.post("/tutor/upload/file",async(req,res)=>{
                             {
                                 send_count:newCount
                             },{returning: true,
-                                where:{send_date:moment().format('YYYY-MM-DD')}
+                                where:{send_date:todayIs}
                             })
                         // )
                         console.log(Email_Modify,"updated view");
@@ -438,27 +466,10 @@ router.post("/tutor/upload/file",async(req,res)=>{
 })
 
 
-const createDate= async()=>{
-    try{
-        const date=await Email.findOne({
-            where:{send_date:moment().format('YYYY-MM-DD')}
-          })
-          if(date==null){
-              const makeDate=await Email.create({
-                  send_Date:moment().format('YYYY-MM-DD')
-              })
-          }
-          
-    }
-    catch(e){
-        console.log(e);
-    }
-  
-  }
-  createDate()
 
 // route to get the saved files 
 router.get("/data/:string",async (req,res)=>{
+    createDate()
 try{
     
    let string=req.params.string;
@@ -466,7 +477,7 @@ try{
     where: {certificate_hash:string}
     });
     const resultEmail=await Email.findOne({
-        where: {send_date:moment().format('YYYY-MM-DD')}
+        where: {send_date:todayIs}
     });
     // console.log(resultEmail,"result");
     if(resultEmail!=null||resultEmail!=[]){
@@ -476,7 +487,7 @@ try{
             {
                 view_count:newView
             },{returning: true,
-                where:{send_date:moment().format('YYYY-MM-DD')}
+                where:{send_date:todayIs}
             })
         // )
         console.log(Email_Modify,"updated view");
@@ -485,7 +496,8 @@ try{
     //     const data =await Email.FindOne({})
     // }
 
-    return  res.send({data:result,path:`${__dirname}/public/data.xlsx`,string:string});
+    //  res.
+     res.send({data:result,path:`/${result.certificate_location}`,string:string})
 
 
 }
@@ -494,6 +506,46 @@ res.send({err:e})
 }
 
 })
+
+router.get("/download/:string",async (req,res)=>{
+    createDate()
+try{
+    
+   let string=req.params.string;
+    const result =await Certificate.findOne({
+    where: {certificate_hash:string}
+    });
+    const resultEmail=await Email.findOne({
+        where: {send_date:todayIs}
+    });
+    // console.log(resultEmail,"result");
+    if(resultEmail!=null||resultEmail!=[]){
+        let newView=resultEmail.view_count+1
+        console.log(newView);
+        const Email_Modify=await Email.update(
+            {
+                view_count:newView
+            },{returning: true,
+                where:{send_date:todayIs}
+            })
+        // )
+        console.log(Email_Modify,"updated view");
+    }
+    // if(result!=null){
+    //     const data =await Email.FindOne({})
+    // }
+console.log("WE got it ");
+    //  res.
+     res.download(`${__dirname}/../public/Pdfs/${result.certificate_location}`,"yoyo.pdf")
+
+
+}
+catch(e){
+res.send({err:e})
+}
+
+})
+
 
 
 

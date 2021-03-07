@@ -1,39 +1,39 @@
 import React, { useState ,useEffect} from 'react'; 
 import { Document, Page,pdfjs } from "react-pdf"; 
+import {useParams} from "react-router-dom"
 import url1 from "../../Files/pdf/certificate.pdf"  
+import FileDownload from "js-file-download"
 import "./showFile.css";  
-const hereIs=`http://game.oyesters.in/EC-353-TCPIP-Mid%20Exam%20March%202021-OPM.pdf`
+import axios from "axios"
+const hereIs=`http://game.oyesters.in/EC-353-TCPIP-Mid%20Exam%20March%202021-OPM.pdf`;
+// import a from "../../../../BlockChain_code_File-main/public/Pdfs/"
 export default function Test(params) { 
-      
+  const [PdfIs,setPdfIs]=useState("")
+  let fpdfIs=`http://localhost:5000/Pdfs${params.url}`
+  const string=useParams()
+        console.log(params.url);
+        let itIs="../../../../BlockChain_code_File-main/public/Pdfs/"+params.url
+        console.log("../../../../BlockChain_code_File-main/public/Pdfs/"+params.url);
   const downloadCertificate=()=>{
-    console.log("kela kela",__dirname,params.url);
-    //creating an invisible element 
-    var element = document.createElement('a'); 
-    element.setAttribute('href',  
-    'data:text/plain;charset=utf-8, ' 
-    + encodeURIComponent(`../../Files/pdf/${params.url}`)); 
-    element.setAttribute('download', "test.pdf"); 
-  
-    
-  
-    document.body.appendChild(element); 
-  
-
-    element.click(); 
-  
-    document.body.removeChild(element); 
+    axios.get(`${window.location.protocol}//${window.location.hostname}:5000/download/${string.string}`)
+    .then(res=>{
+      console.log(res);
+      setPdfIs(res.data)
+      FileDownload(res.data,'downloaf.pdf');
+    })
   }
   pdfjs.GlobalWorkerOptions.workerSrc =  
   `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`; 
+
   const [numPages, setNumPages] = useState(null); 
   const [pageNumber, setPageNumber] = useState(1); 
   
-  
+  /*To Prevent right click on screen*/
   document.addEventListener("contextmenu", (event) => { 
     event.preventDefault(); 
   }); 
     
-  
+  /*When document gets loaded successfully*/
   function onDocumentLoadSuccess({ numPages }) { 
     setNumPages(numPages); 
     setPageNumber(1); 
@@ -58,14 +58,25 @@ export default function Test(params) {
   return ( 
     <> 
     <div className="main showFile"> 
-      <Document 
-        file={url1}
+    <div style={{ width:"850px",height:"500px"}}>
+    <embed
+        src={`http://localhost:5000/Pdfs${params.url}`}
+        type="application/pdf"
+        frameBorder="0"
+        scrolling={"auto"}
+        height={"500px"}
+        width={"100%"}
+    ></embed>
+    </div>
+      {/* <Document 
+        file={PdfIs}
         onLoadSuccess={onDocumentLoadSuccess} 
-      > 
-        <Page pageNumber={pageNumber} /> 
-      </Document> 
+      >
+      </Document>  */}
+           {/* <iframe src={`http://localhost:5000/Pdfs${params.url}`} style={{width:600, height:500}} frameborder="0"> */}
+      {/* <embed src={`http://localhost:5000/Pdfs${params.url}`} style={{width:600, height:500}}/> */}
       <div className="buttonIsShow">
-          <button onClick={()=>{/*downloadCertificate()*/}} className="btn icon_btn"><a  href={hereIs} target="_blank" download="pdf"><i className="large material-icons">get_app</i><a  type="button">Download pdf</a></a></button>
+          <button onClick={()=>downloadCertificate()} className="btn icon_btn"><a href={`http://localhost:5000/Pdfs${params.url}`}  target="_blank" download><i className="large material-icons">get_app</i><a  type="button">Download pdf</a></a></button>
       </div>
       </div> 
     </> 

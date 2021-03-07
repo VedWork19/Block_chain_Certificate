@@ -27,7 +27,7 @@ const Email = db.define('email_table', {
   send_date: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    defaultValue:moment().format('MMMM Do YYYY')
+    defaultValue:moment().format('YYYY-MM-DD')
   },
 });
 
