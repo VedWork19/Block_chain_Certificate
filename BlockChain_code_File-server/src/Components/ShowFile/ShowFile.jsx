@@ -62,19 +62,24 @@ export default function Test(params) {
     <div className="main showFile"> 
     <div style={{ width:"700px",height:"500px"}}>
     <embed
+    style={{scrollBehavior:"unset"}}
         src={`http://localhost:5000/Pdfs${params.url}`}
         type="application/pdf"
         frameBorder="0"
         scrolling={"auto"}
         height={"500px"}
         width={"100%"}
+        type="application/pdf"
     ></embed>
+    {/* <object width={"100%"} height={500} type="application/pdf" data={`http://localhost:5000/Pdfs${params.url}`}> */}
+    {/* <p>Insert your error message here, if the PDF cannot be displayed.</p>
+</object> */}
     </div>
-      {/* <Document 
+      <Document 
         file={PdfIs}
         onLoadSuccess={onDocumentLoadSuccess} 
       >
-      </Document>  */}
+      </Document> 
            {/* <iframe src={`http://localhost:5000/Pdfs${params.url}`} style={{width:600, height:500}} frameborder="0"> */}
       {/* <embed src={`http://localhost:5000/Pdfs${params.url}`} style={{width:600, height:500}}/> */}
       <div className="buttonIsShow">

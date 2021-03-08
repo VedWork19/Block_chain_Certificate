@@ -19,7 +19,9 @@
 
 
 
-
+viewer-pdf-toolbar-new{
+    display: none;
+}
 @media screen and (max-width:850px){
     .react-pdf__Page__canvas{
         max-height: 300px !important;
@@ -30,4 +32,7 @@
     .div1{
         height: 430px;
     }
+}
+#sidenav-container{
+    display: none !important;
 }
