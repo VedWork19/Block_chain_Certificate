@@ -37,7 +37,7 @@ const createDate= async()=>{
   }
   createDate()
 
-
+  let allData=[]
 
     const web3 = new Web3(provider);
     // blockchain deploy for multiple pdfs 
@@ -49,7 +49,8 @@ const createDate= async()=>{
           await gets.map((d,i)=>{
                 if(d!=undefined){
                     datas.map((In,index)=>{
-                        if(d.name==In[`Certificate_Name`]){
+                        // console.log(d.name.replace(".pdf",""),In[`Certificate_Name`]);
+                        if(d.name.replace(".pdf","")==In[`Certificate_Name`]){
                             
                             tot=tot+1
                         }
@@ -58,15 +59,15 @@ const createDate= async()=>{
                 }
                 
             })
-            
+            console.log(tot,gets.length);
             if( tot==gets.length){
                 gets.map(async (d,i)=>{
 
                     if(d!=undefined){
 
                         let namePdf=d.name;
-                        console.log(namePdf,data[`Certificate_Name`]);
-                       if(namePdf==data[`Certificate_Name`]){
+                        // console.log(namePdf,data[`Certificate_Name`]);
+                       if(namePdf.replace(".pdf","")==data[`Certificate_Name`]){
 
                         
 
@@ -78,13 +79,13 @@ const createDate= async()=>{
                          let testIs=randomString.generate({length:20});
                          
                       // generating the trasaction_hash
-                      factory.methods.viewData(testIs).call
+                    //   factory.methods.viewData(testIs).call
                         let hh = await factory.methods.addData(
                           
                           filehash ,/*id */
                           filehash /*pdf hash file*/
               
-                        ).send({gas:'1000000' , from: accounts[0]}).on('transactionHash',async function(hash){
+                        ).send({gas:'2000000' , from: accounts[0]}).on('transactionHash',async function(hash){
                           
                           let get={
                               training_title:data[`TrainingTitle`],
@@ -96,22 +97,23 @@ const createDate= async()=>{
                               certificate_location:`${namePdf}`,
                               transaction_hash:hash,
                               staff_name:data[`Staff_Name`],
-                              staff_email:data[`Staff_Email`],
-                              
-                              
+                              staff_email:data[`Staff_Email`]
                              }
                          
-                 
+                                // allData.push(get);
                                 let gotHere= await Certificate.create(get);
-                                console.log(i+1,"asdasdasda",gets.length-1);
-                                if(gotHere){
+                                // console.log(i+1,"asdasdasda",gets.length-1);
+                                // if(gotHere){
+                                    // console.log(allData);
                                  if(i+1==gets.length-1){
-
-                                     console.log("runned",i);
+                                    // console.log(allData);bulkCreate
+                                    // let gotHere= await Certificate.bulkCreate(allData,{returning: true});
+                                    // console.log(gotHere);
+                                    //  console.log("runned",i);
                                     const resultEmail=await Email.findOne({
                                         where: {send_date:todayIs}
                                     });
-                                    console.log("my date is ",resultEmail);
+                                    // console.log("my date is ",resultEmail);
                                    
                                     if(resultEmail!=null||resultEmail!=[]){
                         
@@ -130,7 +132,7 @@ const createDate= async()=>{
                                         message:"Uploaded Successfully"
                                     })
                                 }
-                            }
+                            // }
             
                       //--------------------------
                       
@@ -184,7 +186,7 @@ const createDate= async()=>{
            
         
         let hh = await factory.methods.addData(
-            testIs,/*id */
+            filehash,/*id */
             filehash/*pdf hash file*/
           ).send({gas:'1000000' , from: accounts[0]}).on('transactionHash',async function(hash){
             //---------------------
@@ -340,7 +342,7 @@ router.post('/tutor/upload/files',async (req, res,next) => {
 
                                  checkPdf= await dataExtract(req.files.file.name);
                                 
-                                console.log(checkPdf,"checkeclsnfksdjnfkjsdnf");
+                                // console.log(checkPdf,"checkeclsnfksdjnfkjsdnf");
                                 if(No_of_certificates!=allPdfs.length-1){
                                     return res.status(200).json({ msg: "Kindly check the inputs you have passed" });
                                 }  if(No_of_certificates!=checkPdf.length){
@@ -364,16 +366,16 @@ router.post('/tutor/upload/files',async (req, res,next) => {
                                         })
                                     
                             }
-                                    console.log(allPdfs.length,"asdasdasdsadasd",index+1);
+                                    // console.log(allPdfs.length,"asdasdasdsadasd",index+1);
                                     if(allPdfs.length==index+1){
                                         let data= await dataExtract(req.files.file.name);
-                                            console.log(data,"check 2");
+                                            // console.log(data,"check 2");
                                             data.map(async (d,index)=>{
                                             
                                         
                                             let hashCertificate= await sha256.sha256(allPdfs[index].name);
                                             // block chain function
-                                            console.log(hashCertificate,"7")
+                                            // console.log(hashCertificate,"7")
                                          let gogo=  await deploy(hashCertificate, d  , data ,  allPdfs,res,next);
                                         
                                         })

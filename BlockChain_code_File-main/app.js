@@ -7,6 +7,7 @@ const PORT=process.env.PORT||5000;
 const morgan = require('morgan');
 app.use(morgan('dev'));
 require("./db/sql");
+require('events').EventEmitter.prototype._maxListeners = 150;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(

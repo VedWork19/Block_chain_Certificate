@@ -37,6 +37,7 @@ const Home =()=>{
 
     // upload function
     const uploadFile = () => {
+        let load=document.querySelector("#load_fileIn.uploading_file");
         console.log(file,"file1");
         console.log(file2,"file2");
         console.log(NoIs,"numbers for pdfs");
@@ -51,7 +52,7 @@ const Home =()=>{
             </div>`
             ,classes:"file_upload_notification"})
           }
-          let load=document.querySelector("#load_fileIn.uploading_file");
+          
           load.style.height="85%"
            load.style.display="block"
 
