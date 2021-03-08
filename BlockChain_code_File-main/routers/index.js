@@ -327,7 +327,8 @@ router.post('/tutor/upload/files',async (req, res,next) => {
     
     // save the file and no of files verify
 
-    let checkPdf=[];
+                        let checkPdf=[];
+
                         req.files.file.mv(`${__dirname}/../public/excel/${req.files.file.name}`,async function (err) {
                             if (err) {
                                 console.log(err)
@@ -353,17 +354,16 @@ router.post('/tutor/upload/files',async (req, res,next) => {
                             
                             if(allPdfs.length!=index+1){
                                 
-                                req.files.file.mv(`${__dirname}/../public/Pdfs/${get.name}`,async function (err) {
-                                        if (err) {
+                                get.mv(`${__dirname}/../public/Pdfs/${get.name}`,async function (err) {
+                                         if (err) {
                                             console.log(err)
                                             return res.status(500).send({ msg: "Error occured" });
-                                        }
+                                         }
                                         
 
                                         })
                                     
-                                    
-                                    }
+                            }
                                     console.log(allPdfs.length,"asdasdasdsadasd",index+1);
                                     if(allPdfs.length==index+1){
                                         let data= await dataExtract(req.files.file.name);

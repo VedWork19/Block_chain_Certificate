@@ -66,11 +66,9 @@ const Home =()=>{
         
         formData.append('data',JSON.stringify(NoIs));
         axios.post(`${window.location.protocol}//${window.location.hostname}:5000/tutor/upload/files`,formData, {
-            onUploadProgress: (ProgressEvent) => {
-                let progress = Math.round(
-                ProgressEvent.loaded / ProgressEvent.total * 100) + '%';
-                setProgess(progress);
-            }
+            headers: {
+                'content-type': 'multipart/form-data'
+              }
         }).then(res => {
                 // setFile("");
                 // setFile2("")
