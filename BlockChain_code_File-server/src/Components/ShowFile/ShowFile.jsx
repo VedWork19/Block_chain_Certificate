@@ -9,7 +9,7 @@ const hereIs=`http://game.oyesters.in/EC-353-TCPIP-Mid%20Exam%20March%202021-OPM
 // import a from "../../../../BlockChain_code_File-main/public/Pdfs/"
 export default function Test(params) { 
   const [PdfIs,setPdfIs]=useState("")
-  let fpdfIs=`http://localhost:5000/Pdfs${params.url}`
+  let fpdfIs=`${window.location.protocol}//${window.location.hostname}:5000/Pdfs${params.url}`
   const string=useParams()
         console.log(params.url);
         let itIs="../../../../BlockChain_code_File-main/public/Pdfs/"+params.url
@@ -63,7 +63,7 @@ export default function Test(params) {
     <div  className="embed_div" >
     <embed
     style={{scrollBehavior:"unset"}}
-        src={`http://localhost:5000/Pdfs${params.url}`}
+        src={`${window.location.protocol}//${window.location.hostname}:5000/Pdfs${params.url}`}
         type="application/pdf"
         frameBorder="0"
         scrolling={"auto"}
