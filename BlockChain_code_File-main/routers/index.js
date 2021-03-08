@@ -59,7 +59,7 @@ const createDate= async()=>{
                 }
                 
             })
-            console.log(tot,gets.length);
+            // console.log(tot,gets.length);
             if( tot==gets.length){
                 gets.map(async (d,i)=>{
 
