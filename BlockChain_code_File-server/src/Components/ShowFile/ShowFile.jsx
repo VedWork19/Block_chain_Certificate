@@ -15,7 +15,9 @@ export default function Test(params) {
         let itIs="../../../../BlockChain_code_File-main/public/Pdfs/"+params.url
         console.log("../../../../BlockChain_code_File-main/public/Pdfs/"+params.url);
   const downloadCertificate=()=>{
-    axios.get(`${window.location.protocol}//${window.location.hostname}:5000/download/${string.string}`)
+    axios.get(`${window.location.protocol}//${window.location.hostname}:5000/download/${string.string}`,{
+      responseType:"blob",
+    })
     .then(res=>{
       console.log(res);
       setPdfIs(res.data)
@@ -58,7 +60,7 @@ export default function Test(params) {
   return ( 
     <> 
     <div className="main showFile"> 
-    <div style={{ width:"850px",height:"500px"}}>
+    <div style={{ width:"700px",height:"500px"}}>
     <embed
         src={`http://localhost:5000/Pdfs${params.url}`}
         type="application/pdf"
@@ -76,7 +78,7 @@ export default function Test(params) {
            {/* <iframe src={`http://localhost:5000/Pdfs${params.url}`} style={{width:600, height:500}} frameborder="0"> */}
       {/* <embed src={`http://localhost:5000/Pdfs${params.url}`} style={{width:600, height:500}}/> */}
       <div className="buttonIsShow">
-          <button onClick={()=>downloadCertificate()} className="btn icon_btn"><a href={`http://localhost:5000/Pdfs${params.url}`}  target="_blank" download><i className="large material-icons">get_app</i><a  type="button">Download pdf</a></a></button>
+          <button onClick={()=>downloadCertificate()} className="btn icon_btn"><a   target="_blank" download><i className="large material-icons">get_app</i><a  type="button">Download pdf</a></a></button>
       </div>
       </div> 
     </> 
