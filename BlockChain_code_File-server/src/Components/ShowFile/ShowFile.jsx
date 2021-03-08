@@ -60,16 +60,13 @@ export default function Test(params) {
   return ( 
     <> 
     <div className="main showFile"> 
-    <div style={{ width:"700px",height:"500px"}}>
+    <div  className="embed_div" >
     <embed
     style={{scrollBehavior:"unset"}}
         src={`http://localhost:5000/Pdfs${params.url}`}
         type="application/pdf"
         frameBorder="0"
         scrolling={"auto"}
-        height={"500px"}
-        width={"100%"}
-        type="application/pdf"
     ></embed>
     {/* <object width={"100%"} height={500} type="application/pdf" data={`http://localhost:5000/Pdfs${params.url}`}> */}
     {/* <p>Insert your error message here, if the PDF cannot be displayed.</p>

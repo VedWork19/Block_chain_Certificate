@@ -116,6 +116,28 @@ img{
     margin:20px auto;
     width: 55%;
 }
+@media screen and (max-width:800px){
+    .table_data {
+        display: none;
+        margin:20px auto;
+        width: 70%;
+    }
+}
+@media screen and (max-width:600px){
+    .table_data {
+        display: none;
+        margin:20px auto;
+        width: 80%;
+    }
+}
+@media screen and (max-width:550px){
+    .table_data {
+        display: none;
+        margin:20px auto;
+        width: 90%;
+    }
+}
+
 .table_data h3{
     font-size:2.2rem;
     margin-bottom: 40px;

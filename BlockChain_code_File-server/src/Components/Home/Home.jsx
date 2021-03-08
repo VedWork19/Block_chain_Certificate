@@ -241,7 +241,7 @@ const Home =()=>{
                     
             </div>
         </div>
-        <div>{moment().format('YYYY-MM-DD')}</div>
+        
         <center> <button onClick={()=>{uploadFile()/*dummy()*/}} class="waves-effect waves-light btn"><span class="Small material-icons">upload</span><span>UPLOAD</span></button></center>
     </div>
     </>);

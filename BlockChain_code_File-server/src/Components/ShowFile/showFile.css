@@ -33,6 +33,149 @@ viewer-pdf-toolbar-new{
         height: 430px;
     }
 }
-#sidenav-container{
-    display: none !important;
+.main .embed_div{
+    width: 700px;
+    height: 500px;
 }
+.main div embed{
+    
+    height: 500px;
+    width:100%
+}
+@media screen and (max-width:1000px){
+    .main .embed_div {
+
+        width: 650px;
+        height: 500px;
+        
+    }   
+}
+
+@media screen and (max-width:900px){
+    .main .embed_div {
+
+        width: 600px;
+        height: 500px;
+        
+    }   
+}
+@media screen and (max-width:850px){
+    .main .embed_div {
+
+        width: 550px;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+
+@media screen and (max-width:780px){
+    .main .embed_div {
+
+        width: 500px;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+
+@media screen and (max-width:720px){
+    .main .embed_div {
+
+        width: 450px;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+
+@media screen and (max-width:780px){
+    .main .embed_div {
+
+        width: 500px;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+
+@media screen and (max-width:680px){
+    .main .embed_div {
+
+        width: 400px;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+@media screen and (max-width:600px){
+    .main .embed_div {
+
+        width: 500px;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+
+@media screen and (max-width:590px){
+    .main .embed_div {
+
+        width: 450px;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+
+@media screen and (max-width:520px){
+    .main .embed_div {
+
+        width: 400px;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+@media screen and (max-width:490px){
+    .main .embed_div {
+
+        width: 350px;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+@media screen and (max-width:430px){
+    .main .embed_div {
+
+        width: 100%;
+        height: 300px;
+        
+    }   
+    .main div embed{
+        height: 300px;   
+    }
+}
+
+
+
+
