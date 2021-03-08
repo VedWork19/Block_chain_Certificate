@@ -11,15 +11,15 @@ function App() {
     <BrowserRouter >
     
     
-      <Route exact path="/">
+      <Route exact path="/upload/home">
         <Nav2/>
         <Home />
       </Route>
-      <Route  path="/page2/:string">
+      <Route  path="/upload/page2/:string">
         <Nav/>
         <Page2/>
       </Route>
-      <Route  path="/page3">
+      <Route  path="/upload/page1">
         <Nav2/>
         <Page3/>
       </Route>

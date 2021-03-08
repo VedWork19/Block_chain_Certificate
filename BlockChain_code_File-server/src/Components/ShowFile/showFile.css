@@ -34,13 +34,37 @@ viewer-pdf-toolbar-new{
     }
 }
 .main .embed_div{
-    width: 700px;
+    width: 890px;
     height: 500px;
 }
 .main div embed{
     
     height: 500px;
     width:100%
+}
+@media screen and (max-width:1300px){
+    .main .embed_div {
+
+        width: 720px;
+        height: 500px;
+        
+    }   
+}
+@media screen and (max-width:1230px){
+    .main .embed_div {
+
+        width: 800px;
+        height: 500px;
+        
+    }   
+}
+@media screen and (max-width:1090px){
+    .main .embed_div {
+
+        width: 730px;
+        height: 500px;
+        
+    }   
 }
 @media screen and (max-width:1000px){
     .main .embed_div {
