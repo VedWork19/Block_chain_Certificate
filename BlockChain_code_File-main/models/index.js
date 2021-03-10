@@ -44,22 +44,15 @@ const Certificates = db.define('certificate', {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
-  // jpg_location: {
-  //   type: DataTypes.STRING(255),
-  //   allowNull: true,
-  // },
-  //
-  // string:{
-  //   type: DataTypes.STRING(255),
-   
-  //   allowNull: false
-
-  // },
-  //
   certificate_hash:{
     type:DataTypes.STRING(255),
     
     allowNull:true,
+  },
+
+  certificate_link:{
+    type:DataTypes.STRING(255),
+    allowNull:true
   },
   //
   transaction_hash:{

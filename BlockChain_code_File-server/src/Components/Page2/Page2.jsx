@@ -44,6 +44,7 @@ const Page2=()=>{
         if(data){
             setUser(data.data.data)
             setPath(data.data.path)
+            console.log(data.data);
             // console.log(data.d ata.data)   
             }
         } 

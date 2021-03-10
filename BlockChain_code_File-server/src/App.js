@@ -15,7 +15,7 @@ function App() {
         <Nav2/>
         <Home />
       </Route>
-      <Route  path="/upload/page2/:string">
+      <Route  path="/upload/certificate/:string">
         <Nav/>
         <Page2/>
       </Route>

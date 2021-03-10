@@ -41,7 +41,7 @@ const createDate= async()=>{
 
     const web3 = new Web3(provider);
     // blockchain deploy for multiple pdfs 
-    const deploy = async (filehash,data,datas,gets,res,next) => {
+    const deploy = async (filehash,data,datas,gets,res,next,req) => {
 
         try{
             
@@ -87,6 +87,7 @@ const createDate= async()=>{
               
                         ).send({gas:'2000000' , from: accounts[0]}).on('transactionHash',async function(hash){
                           
+                      
                           let get={
                               training_title:data[`TrainingTitle`],
                               batch_trainer:data[`Batch_Trainer`],
@@ -97,7 +98,8 @@ const createDate= async()=>{
                               certificate_location:`${namePdf}`,
                               transaction_hash:hash,
                               staff_name:data[`Staff_Name`],
-                              staff_email:data[`Staff_Email`]
+                              staff_email:data[`Staff_Email`],
+                              certificate_link:`${req.protocol}://${req.host}:3000/upload/certificate/${filehash}`,
                              }
                          
                                 // allData.push(get);
@@ -175,7 +177,7 @@ const createDate= async()=>{
     }
     
 // blockchain deploy for single pdfs 
-      const deploy2 = async (filehash,data,res) => {
+      const deploy2 = async (filehash,data,res,req) => {
 
         try{
             const accounts = await web3.eth.getAccounts();
@@ -376,7 +378,7 @@ router.post('/tutor/upload/files',async (req, res,next) => {
                                             let hashCertificate= await sha256.sha256(allPdfs[index].name);
                                             // block chain function
                                             // console.log(hashCertificate,"7")
-                                         let gogo=  await deploy(hashCertificate, d  , data ,  allPdfs,res,next);
+                                         let gogo=  await deploy(hashCertificate, d  , data ,  allPdfs,res,next,req);
                                         
                                         })
                                        
@@ -425,6 +427,7 @@ router.post("/tutor/upload/file",async(req,res)=>{
             ...data,
             string:testIs,
             certificate_hash:hashCertificate,
+            certificate_link:`${req.protocol}://${req.host}:3000/upload/certificate/${hashCertificate}`,
             certificate_location:`${myfile.name}`
         }
 
@@ -434,7 +437,7 @@ router.post("/tutor/upload/file",async(req,res)=>{
                         console.log(err)
                         return res.status(400).send({ msg: "Error occured" });
                     }
-                    await deploy2(hashCertificate,allData);
+                    await deploy2(hashCertificate,allData,res,req);
 
                     const resultEmail=await Email.findOne({
                         where: {send_date:todayIs}
