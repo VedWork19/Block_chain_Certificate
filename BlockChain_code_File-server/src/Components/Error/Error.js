@@ -1,16 +1,17 @@
 import React from "react";
 import animation from "../../img/404.json"
+import animation2 from "../../img/404_2.json";
 import "./Error.css";
 import {useLottie} from "lottie-react";
 const Anime=()=>{
     const style={
-      height:330,
+      height:350,
       width:500,
     
     }
     
       const options = {
-        animationData: animation,
+        animationData: animation2,
         loop: true,
         autoplay: true,
       };
