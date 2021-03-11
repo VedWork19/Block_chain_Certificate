@@ -5,6 +5,11 @@ import axiosInstance from "../../helper/AxiosInstance";
 import axios from "axios";
 import M from "materialize-css"
 import moment from "moment";
+
+
+
+
+
 const Home =()=>{
     // excel
     const [file, setFile] = useState(''); 
@@ -92,7 +97,8 @@ const Home =()=>{
                 load.style.display="none"
                 // npm start;
                 // setFile2("");
-                M.toast({html:`
+                M.toast({displayLength:12000,
+                    html:`
                 <div class="file_upload_notification_error">
                     <span class="material-icons">
                     error_outline

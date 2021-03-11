@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from "react";
 import "./Page.css";
-import {useParams} from "react-router-dom"
+import {useParams,useHistory} from "react-router-dom"
 import axios from "axios"
 import ShowFile from "../ShowFile/ShowFile";
 import {Link} from "react-router-dom"
@@ -32,6 +32,7 @@ const style={
 
 const Page2=()=>{
     
+    const History=useHistory()
     const string=useParams()
     const [path,setPath]=useState("")
     const [user,setUser]=useState({});
@@ -41,11 +42,17 @@ const Page2=()=>{
         // console.log(string.string);
         try{
             const data= await axios.get(`${window.location.protocol}//${window.location.hostname}:5000/data/${string.string}`);
-        if(data){
+        if(data.data.data){
+
             setUser(data.data.data)
             setPath(data.data.path)
             console.log(data.data);
             // console.log(data.d ata.data)   
+            }
+            else{
+                
+                    return History.push("/error_page");
+                
             }
         } 
         catch (e){
@@ -154,7 +161,7 @@ const showVerification=(condition)=>{
           <div className="content_page">
               
               <div>
-              <h3>Issued</h3>
+              <h3>Issued 2</h3>
               <h4>{user?user.staff_name:"NO"}</h4>
               </div>
               <div>
@@ -171,7 +178,7 @@ const showVerification=(condition)=>{
               <h4> {user?user.batch_duration:"NO"}</h4>
               </div>
               <div>
-              <h3>Transsaction Hash</h3>
+              <h3>Transaction Hash</h3>
               <p style={{width:"500px",textAlign:"left"}}>{user?user.transaction_hash:"NO"}</p>
               </div>
               <div>

@@ -12,16 +12,15 @@ export default function Test(params) {
   let fpdfIs=`${window.location.protocol}//${window.location.hostname}:5000/Pdfs${params.url}`
   const string=useParams()
         console.log(params.url);
-        let itIs="../../../../BlockChain_code_File-main/public/Pdfs/"+params.url
-        console.log("../../../../BlockChain_code_File-main/public/Pdfs/"+params.url);
+        // let itIs="../../../../BlockChain_code_File-main/public/Pdfs/"+params.url
+        // console.log("../../../../BlockChain_code_File-main/public/Pdfs/"+params.url);
   const downloadCertificate=()=>{
     axios.get(`${window.location.protocol}//${window.location.hostname}:5000/download/${string.string}`,{
       responseType:"blob",
     })
     .then(res=>{
-      console.log(res);
       setPdfIs(res.data)
-      FileDownload(res.data,'downloaf.pdf');
+      FileDownload(res.data,`${params.url.replace("/","")}`);
     })
   }
   pdfjs.GlobalWorkerOptions.workerSrc =  
@@ -72,11 +71,11 @@ export default function Test(params) {
     {/* <p>Insert your error message here, if the PDF cannot be displayed.</p>
 </object> */}
     </div>
-      <Document 
+      {/* <Document 
         file={PdfIs}
         onLoadSuccess={onDocumentLoadSuccess} 
       >
-      </Document> 
+      </Document>  */}
            {/* <iframe src={`http://localhost:5000/Pdfs${params.url}`} style={{width:600, height:500}} frameborder="0"> */}
       {/* <embed src={`http://localhost:5000/Pdfs${params.url}`} style={{width:600, height:500}}/> */}
       <div className="buttonIsShow">

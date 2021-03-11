@@ -1,0 +1,15 @@
+.error_page{
+    margin: 6% auto;
+}
+.animation_show{
+    
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+}
+.error_msg_is{
+    color: #AACC00;
+    
+}

@@ -37,129 +37,274 @@ const createDate= async()=>{
   }
   createDate()
 
-  let allData=[]
+
 
     const web3 = new Web3(provider);
     // blockchain deploy for multiple pdfs 
-    const deploy = async (filehash,data,datas,gets,res,next,req) => {
-
+    const deploy = async (filehash,data,pdf,req,next) => {
+        let gotHere;
         try{
+            // console.log("hash_certificate:",filehash);
+            // console.log("hash_certificate:",data[`Certificate_Name`]);
+            // console.log("hash_certificate:",pdf.name.replace(".pdf",""));
+            const accounts = await web3.eth.getAccounts();
+            console.log('account address ', accounts[0]);
+           
+        
+        let hh = await factory.methods.addData(
+            filehash,/*id */
+            filehash/*pdf hash file*/
+          ).send({gas:'1000000' , from: accounts[0]}).on('transactionHash',async function(hash){
+            //---------------------
+            // code of DB
+            // create row data and save
+
+            let get={
+                training_title:data[`TrainingTitle`],
+                batch_trainer:data[`Batch_Trainer`],
+                staff_name:data[`Staff_Name`],
+                batch_duration:data[`BatchStartDate`],
+                certificate_hash:filehash,
+                batch_code:data[`Batch Code`],
+                certificate_location:`${pdf.name}`,
+                transaction_hash:hash,
+                staff_name:data[`Staff_Name`],
+                staff_email:data[`Staff_Email`],
+                certificate_link:`${req.protocol}://${req.host}:3000/upload/certificate/${filehash}`,
+               }
+
+                   gotHere= await Certificate.create(get);
+                   const resultEmail=await Email.findOne({
+                            where: {send_date:todayIs}
+                        });
+                        // console.log("my date is ",resultEmail);
+                    
+                        if(resultEmail!=null||resultEmail!=[]){
             
-            let tot=1;
-          await gets.map((d,i)=>{
-                if(d!=undefined){
-                    datas.map((In,index)=>{
-                        // console.log(d.name.replace(".pdf",""),In[`Certificate_Name`]);
-                        if(d.name.replace(".pdf","")==In[`Certificate_Name`]){
-                            
-                            tot=tot+1
+                            let newCount=resultEmail.send_count+1;
+                        
+                            const Email_Modify=await Email.update(
+                                {
+                                    send_count:newCount
+                                },{returning: true,
+                                    where:{send_date:todayIs}
+                                })
+                        
                         }
-                    })
-                    
-                }
-                
-            })
-            // console.log(tot,gets.length);
-            if( tot==gets.length){
-                gets.map(async (d,i)=>{
 
-                    if(d!=undefined){
 
-                        let namePdf=d.name;
-                        // console.log(namePdf,data[`Certificate_Name`]);
-                       if(namePdf.replace(".pdf","")==data[`Certificate_Name`]){
+        });
 
-                        
-
-                        const accounts = await web3.eth.getAccounts();
-                        console.log('account address ', accounts[0]);
-              
-                          // unique Id (for dev using random string )
-              
-                         let testIs=randomString.generate({length:20});
-                         
-                      // generating the trasaction_hash
-                    //   factory.methods.viewData(testIs).call
-                        let hh = await factory.methods.addData(
-                          
-                          filehash ,/*id */
-                          filehash /*pdf hash file*/
-              
-                        ).send({gas:'2000000' , from: accounts[0]}).on('transactionHash',async function(hash){
-                          
-                      
-                          let get={
-                              training_title:data[`TrainingTitle`],
-                              batch_trainer:data[`Batch_Trainer`],
-                              staff_name:data[`Staff_Name`],
-                              batch_duration:data[`BatchStartDate`],
-                              certificate_hash:filehash,
-                              batch_code:data[`Batch Code`],
-                              certificate_location:`${namePdf}`,
-                              transaction_hash:hash,
-                              staff_name:data[`Staff_Name`],
-                              staff_email:data[`Staff_Email`],
-                              certificate_link:`${req.protocol}://${req.host}:3000/upload/certificate/${filehash}`,
-                             }
-                         
-                                // allData.push(get);
-                                let gotHere= await Certificate.create(get);
-                                // console.log(i+1,"asdasdasda",gets.length-1);
-                                // if(gotHere){
-                                    // console.log(allData);
-                                 if(i+1==gets.length-1){
-                                    // console.log(allData);bulkCreate
-                                    // let gotHere= await Certificate.bulkCreate(allData,{returning: true});
-                                    // console.log(gotHere);
-                                    //  console.log("runned",i);
-                                    const resultEmail=await Email.findOne({
-                                        where: {send_date:todayIs}
-                                    });
-                                    // console.log("my date is ",resultEmail);
-                                   
-                                    if(resultEmail!=null||resultEmail!=[]){
-                        
-                                        let newCount=resultEmail.send_count+gets.length-1
-                                       
-                                        const Email_Modify=await Email.update(
-                                            {
-                                                send_count:newCount
-                                            },{returning: true,
-                                                where:{send_date:todayIs}
-                                            })
-                                    
-                                    }
-                                    return res.status(201).json({
-                                        success:true,
-                                        message:"Uploaded Successfully"
-                                    })
-                                }
-                            // }
-            
-                      //--------------------------
-                      
-                      });
-                         
-                       }
-                       
-                      
-                       
-                    }
-                    
-                })
-                
-            }else{
-                throw new Error("Kindly check the inputs you have passed");
-            }
-    
+        if(gotHere){
+            return 1;
+        }else{
+            return null;
+        }
 
         } catch(e){
-            
+            console.log(e);
             next(e)
-            
-            
         }
-      };
+
+    }
+
+// {
+//         try{
+            
+//             let tot=1;
+//           await gets.map(async (d,i)=>{
+//                 if(d!=undefined){
+//                     datas.map(async (data,index)=>{
+//                         // console.log(d.name.replace(".pdf",""),In[`Certificate_Name`]);
+//                         if(d.name.replace(".pdf","")==data[`Certificate_Name`]){
+                        
+//                                     let namePdf=d.name;        
+            
+//                                     const accounts = await web3.eth.getAccounts();
+//                                     console.log('account address ', accounts[0]);
+                          
+//                                       // unique Id (for dev using random string )
+                          
+//                                      let testIs=randomString.generate({length:20});
+                                     
+//                                   // generating the trasaction_hash
+//                                 //   factory.methods.viewData(testIs).call
+//                                     let hh = await factory.methods.addData(
+                                      
+//                                       filehash ,/*id */
+//                                       filehash /*pdf hash file*/
+                          
+//                                     ).send({gas:'2000000' , from: accounts[0]}).on('transactionHash',async function(hash){
+                                      
+                                  
+//                                       let get={
+//                                           training_title:data[`TrainingTitle`],
+//                                           batch_trainer:data[`Batch_Trainer`],
+//                                           staff_name:data[`Staff_Name`],
+//                                           batch_duration:data[`BatchStartDate`],
+//                                           certificate_hash:filehash,
+//                                           batch_code:data[`Batch Code`],
+//                                           certificate_location:`${namePdf}`,
+//                                           transaction_hash:hash,
+//                                           staff_name:data[`Staff_Name`],
+//                                           staff_email:data[`Staff_Email`],
+//                                           certificate_link:`${req.protocol}://${req.host}:3000/upload/certificate/${filehash}`,
+//                                          }
+                                     
+//                                             // allData.push(get);
+//                                             let gotHere= await Certificate.create(get);
+//                                             // console.log(i+1,"asdasdasda",gets.length-1);
+//                                             // if(gotHere){
+//                                                 // console.log(allData);
+//                                                 console.log(i+1,data[`Staff_Name`],"No of sum is ");
+//                                              if(i+1==gets.length-1){
+//                                                 // console.log(allData);bulkCreate
+//                                                 // let gotHere= await Certificate.bulkCreate(allData,{returning: true});
+//                                                 // console.log(gotHere);
+//                                                 //  console.log("runned",i);
+//                                                 const resultEmail=await Email.findOne({
+//                                                     where: {send_date:todayIs}
+//                                                 });
+//                                                 // console.log("my date is ",resultEmail);
+                                               
+//                                                 if(resultEmail!=null||resultEmail!=[]){
+                                    
+//                                                     let newCount=resultEmail.send_count+gets.length-1
+                                                   
+//                                                     const Email_Modify=await Email.update(
+//                                                         {
+//                                                             send_count:newCount
+//                                                         },{returning: true,
+//                                                             where:{send_date:todayIs}
+//                                                         })
+                                                
+//                                                 }
+
+//                                                 return res.status(201).json({
+//                                                     success:true,
+//                                                     message:"Uploaded Successfully"
+//                                                 })
+//                                             }
+//                                         // }
+                        
+//                                   //--------------------------
+                                  
+//                                   });
+                                     
+                                   
+                                   
+                                  
+                                   
+                                
+                                
+                            
+//                         }
+//                     })
+                    
+//                 }
+                
+//             })
+//             // console.log(tot,gets.length);
+//             // if( tot==gets.length){
+//             //     gets.map(async (d,i)=>{
+
+//             //         if(d!=undefined){
+
+//             //             let namePdf=d.name;
+//             //             // console.log(namePdf,data[`Certificate_Name`]);
+//             //            if(namePdf.replace(".pdf","")==data[`Certificate_Name`]){
+
+                        
+
+//             //             const accounts = await web3.eth.getAccounts();
+//             //             console.log('account address ', accounts[0]);
+              
+//             //               // unique Id (for dev using random string )
+              
+//             //              let testIs=randomString.generate({length:20});
+                         
+//             //           // generating the trasaction_hash
+//             //         //   factory.methods.viewData(testIs).call
+//             //             let hh = await factory.methods.addData(
+                          
+//             //               filehash ,/*id */
+//             //               filehash /*pdf hash file*/
+              
+//             //             ).send({gas:'2000000' , from: accounts[0]}).on('transactionHash',async function(hash){
+                          
+                      
+//             //               let get={
+//             //                   training_title:data[`TrainingTitle`],
+//             //                   batch_trainer:data[`Batch_Trainer`],
+//             //                   staff_name:data[`Staff_Name`],
+//             //                   batch_duration:data[`BatchStartDate`],
+//             //                   certificate_hash:filehash,
+//             //                   batch_code:data[`Batch Code`],
+//             //                   certificate_location:`${namePdf}`,
+//             //                   transaction_hash:hash,
+//             //                   staff_name:data[`Staff_Name`],
+//             //                   staff_email:data[`Staff_Email`],
+//             //                   certificate_link:`${req.protocol}://${req.host}:3000/upload/certificate/${filehash}`,
+//             //                  }
+                         
+//             //                     // allData.push(get);
+//             //                     let gotHere= await Certificate.create(get);
+//             //                     // console.log(i+1,"asdasdasda",gets.length-1);
+//             //                     // if(gotHere){
+//             //                         // console.log(allData);
+//             //                      if(i+1==gets.length-1){
+//             //                         // console.log(allData);bulkCreate
+//             //                         // let gotHere= await Certificate.bulkCreate(allData,{returning: true});
+//             //                         // console.log(gotHere);
+//             //                         //  console.log("runned",i);
+//             //                         const resultEmail=await Email.findOne({
+//             //                             where: {send_date:todayIs}
+//             //                         });
+//             //                         // console.log("my date is ",resultEmail);
+                                   
+//             //                         if(resultEmail!=null||resultEmail!=[]){
+                        
+//             //                             let newCount=resultEmail.send_count+gets.length-1
+                                       
+//             //                             const Email_Modify=await Email.update(
+//             //                                 {
+//             //                                     send_count:newCount
+//             //                                 },{returning: true,
+//             //                                     where:{send_date:todayIs}
+//             //                                 })
+                                    
+//             //                         }
+//             //                         return res.status(201).json({
+//             //                             success:true,
+//             //                             message:"Uploaded Successfully"
+//             //                         })
+//             //                     }
+//             //                 // }
+            
+//             //           //--------------------------
+                      
+//             //           });
+                         
+//             //            }
+                       
+                      
+                       
+//             //         }
+                    
+//             //     })
+                
+//             // }else{
+//             //     throw new Error("Kindly check the inputs you have passed");
+//             // }
+    
+
+//         } catch(e){
+            
+//             next(e)
+            
+            
+//         }
+//       };
 
 
 
@@ -310,8 +455,11 @@ router.get("/verify/:id",async (req,res)=>{
 
 // multipe file upload route
 router.post('/tutor/upload/files',async (req, res,next) => {
+    let totGet=0;
     createDate()
     try{ 
+        // count the on of time saved sucessfully 
+        
         // console.log(req.files,"sdfghjk")
                             const No_of_certificates=JSON.parse(req.body.data);
                             // console.log(No_of_certificates);
@@ -338,7 +486,7 @@ router.post('/tutor/upload/files',async (req, res,next) => {
                                 console.log(err)
                                 return res.status(500).send({ msg: "Error occured" });
                             }
-                            allPdfs.map(async (get,index)=>{
+                             allPdfs.map(async (get,index)=>{
 
                             
 
@@ -354,55 +502,97 @@ router.post('/tutor/upload/files',async (req, res,next) => {
                                 if(allPdfs.length-1!=checkPdf.length){
                                     return res.status(200).json({ msg: "Kindly check the inputs you have passed" });
                                 }
-                            
-                            
-                            if(allPdfs.length!=index+1){
                                 
-                                get.mv(`${__dirname}/../public/Pdfs/${get.name}`,async function (err) {
-                                         if (err) {
-                                            console.log(err)
-                                            return res.status(500).send({ msg: "Error occured" });
-                                         }
-                                        
-
-                                        })
+                                if(allPdfs[index]!=undefined){
+                                    let checkpdf=0;
+                                    checkPdf.map((d,i)=>{
                                     
-                            }
-                                    // console.log(allPdfs.length,"asdasdasdsadasd",index+1);
-                                    if(allPdfs.length==index+1){
-                                        let data= await dataExtract(req.files.file.name);
-                                            // console.log(data,"check 2");
-                                            data.map(async (d,index)=>{
-                                            
                                         
-                                            let hashCertificate= await sha256.sha256(allPdfs[index].name);
-                                            // block chain function
-                                            // console.log(hashCertificate,"7")
-                                         let gogo=  await deploy(hashCertificate, d  , data ,  allPdfs,res,next,req);
+                                        if(d["Certificate_Name"]!=allPdfs[index].name.replace(".pdf","")){
+                                            checkpdf=checkpdf+1
+                                        }else{
+                                            checkpdf=0
+                                        }
+                                        if(checkpdf==checkPdf.length){
+                                            console.log(checkpdf,"and",checkPdf.length);
+                                            console.log(d["Certificate_Name"],allPdfs[index].name.replace(".pdf",""));
+                                            return res.status(201).json({
+                                                error:true,
+                                                message:`All pdfs saved sucessfully! Except ${allPdfs[index].name.replace(".pdf","")}.pdf  does not match with the excel sheet uploaded.`
+                                            })
+                                        }
                                         
-                                        })
-                                       
+                                    })
                                 }
                                 
                             
-                                });
-                        
+                            if(allPdfs.length!=index+1){
+                                    
+                                    get.mv(`${__dirname}/../public/Pdfs/${get.name}`,async function (err) {
+                                            if (err) {
+                                                console.log(err)
+                                                return res.status(500).send({ msg: "Error occured" });
+                                            }
+                                            
 
+                                            })
+                                let data= await dataExtract(req.files.file.name);
+                                            // console.log(data,"check 2");
+                                     let checkpdf=0;
+                                    data.map(async (d,i)=>{
+                                            
+                                        
+                                        if(d[`Certificate_Name`]==allPdfs[index].name.replace(".pdf","")){
+                                            // console.log("certificate name :",d[`Cer?tificate_Name`],"pdf name :",allPdfs[index].name.replace(".pdf",""),index,i);
+                                            let hashCertificate= await sha256.sha256(allPdfs[i].name);
+                                            
+                                            let gogo=  await deploy(hashCertificate,d,allPdfs[i],req,next); 
+                                            totGet=totGet+gogo;
+                                            console.log(gogo);
+                                            console.log(totGet);
+                                            console.log(totGet==data.length);
+                                            console.log(totGet,data.length);
+                                            if(totGet==data.length){
 
-                            }) 
-            // save the file and no of files verify
+                                                
+                                               
+
+                                                return res.status(201).json({
+                                                    success:true,
+                                                    message:"Uploaded Successfully"
+                                                })
+                                            }
+                                            else if(gogo==null){
+                                                return res.status(201).json({
+                                                    error:true,
+                                                    message:"Unable to save the data"
+                                                })
+                                            }
+                            
+                                    }
+                                        
+                                        
+                                    
+                                })    
                                 
-                     
-                        
-                        
+                        }          
+                              
+                                       
+                                
+                                
+                            
+                      });
+
+
+                }) 
                         
 
-    
         }
             catch(e){
                 console.log(e);
-                res.send({err:e,
-                    msg:e});
+                next(e)
+                // res.send({err:e,
+                //     msg:e});
             }
         })
 
@@ -536,12 +726,10 @@ try{
         // )
         console.log(Email_Modify,"updated view");
     }
-    // if(result!=null){
-    //     const data =await Email.FindOne({})
-    // }
+    
 console.log("WE got it ");
     //  res.
-     res.download(`${__dirname}/../public/Pdfs/${result.certificate_location}`,"yoyo.pdf")
+     res.download(`${__dirname}/../public/Pdfs/${result.certificate_location}`)
 
 
 }
@@ -565,22 +753,3 @@ router.use((error, req, res, next) => {
 
 module.exports=router;
 
-
-// certificate_id(primary key-int255)
-// batch_code(int-255, Null-NO)
-// staff_name(varchar-255, Null-NO)
-// staff_email(varchar-255, Null NO)
-
-// tarining_title(varchar-255, Null NO)
-
-// batch_trainer(varchar-255, Null NO)
-
-// batch_duration(varchar-255, Null NO)
-// certificate_location(varchar-255, Null NO)
-
-// certificate_hash(varchar-255, Null NO)
-
-// transaction_hash(varchar-255, Null NO)
-
-// certificate_view(int-255, Null-NO, Default-0)
-// createdAt(datetime
