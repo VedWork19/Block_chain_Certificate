@@ -188,7 +188,7 @@ const Home =()=>{
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                        <input  onChange={(e)=>{set_batch_start_date(e.target.value)}} id="Batch_Start_Date" type="date" class="validate" />
+                        <input  onChange={(e)=>{set_batch_start_date(e.target.value)}} id="Batch_Start_Date" type="text" class="validate" />
                         <label for="Batch_Start_Date">Batch Duration Date</label>
                         </div>
                         

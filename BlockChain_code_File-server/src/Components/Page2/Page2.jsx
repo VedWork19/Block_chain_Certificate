@@ -97,9 +97,6 @@ const Page2=()=>{
         }
     }
     useEffect( ()=>{
-    
-
-        
         fetchData()
         console.log(path);
     },[])
@@ -161,7 +158,7 @@ const showVerification=(condition)=>{
           <div className="content_page">
               
               <div>
-              <h3>Issued 2</h3>
+              <h3>Issued to</h3>
               <h4>{user?user.staff_name:"NO"}</h4>
               </div>
               <div>

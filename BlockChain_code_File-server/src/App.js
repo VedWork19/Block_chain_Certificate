@@ -31,7 +31,7 @@ function App() {
       </Route>
       <Route >
           <Nav/>
-          <ErrorPage />
+          <ErrorPage/>
       </Route>
     <Foot/>  
       </Switch>
