@@ -27,15 +27,14 @@ const createDate= async()=>{
               const makeDate=await Email.create({
                   send_Date:todayIs
               })
-          }
-          
+          }     
     }
     catch(e){
         console.log(e);
     }
   
   }
-  createDate()
+//   createDate()
 
 
 
@@ -409,8 +408,6 @@ const dataExtract= async (file)=>{
 
 router.get("/verify/:id",async (req,res)=>{
 
-    createDate()
-
     let check= await  DataCheck(req.params.id);
     let data= await Certificate.findOne({
             where: {certificate_hash:req.params.id}
@@ -456,7 +453,6 @@ router.get("/verify/:id",async (req,res)=>{
 // multipe file upload route
 router.post('/tutor/upload/files',async (req, res,next) => {
     let totGet=0;
-    createDate()
     try{ 
         // count the on of time saved sucessfully 
         
@@ -546,7 +542,7 @@ router.post('/tutor/upload/files',async (req, res,next) => {
                                             // console.log("certificate name :",d[`Cer?tificate_Name`],"pdf name :",allPdfs[index].name.replace(".pdf",""),index,i);
                                             let hashCertificate= await sha256.sha256(allPdfs[i].name);
                                             
-                                            let gogo=  await deploy(hashCertificate,d,allPdfs[i],req,next); 
+                                            let gogo= await deploy(hashCertificate,d,allPdfs[i],req,next); 
                                             totGet=totGet+gogo;
                                             console.log(gogo);
                                             console.log(totGet);
@@ -554,13 +550,10 @@ router.post('/tutor/upload/files',async (req, res,next) => {
                                             console.log(totGet,data.length);
                                             if(totGet==data.length){
 
-                                                
-                                               
-
                                                 return res.status(201).json({
                                                     success:true,
                                                     message:"Uploaded Successfully"
-                                                })
+                                                });
                                             }
                                             else if(gogo==null){
                                                 return res.status(201).json({
@@ -600,7 +593,7 @@ router.post('/tutor/upload/files',async (req, res,next) => {
 
 // single file upload route
 router.post("/tutor/upload/file",async(req,res)=>{
-    createDate()
+   
     try{
 
 
@@ -703,7 +696,7 @@ res.send({err:e})
 })
 
 router.get("/download/:string",async (req,res)=>{
-    createDate()
+  
 try{
     
    let string=req.params.string;

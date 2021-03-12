@@ -2,7 +2,7 @@ import React from "react";
 import "./Foot.css"
 const Foot=()=>{
     return (
-        <div>
+        <div >
             <footer class="page-footer card">
           <div class="container">
             <div class="row">

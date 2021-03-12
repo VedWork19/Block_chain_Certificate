@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React,{useEffect,useState,useRef} from "react";
 import "./Page.css";
 import {useParams,useHistory} from "react-router-dom"
 import axios from "axios"
@@ -31,7 +31,7 @@ const style={
 
 
 const Page2=()=>{
-    
+    const ThisONe=useRef(null)
     const History=useHistory()
     const string=useParams()
     const [path,setPath]=useState("")
@@ -106,12 +106,14 @@ const Page2=()=>{
         time.style.display="flex";
         setTimeout(()=>{
             time.style.display="none";
+            
             axios.get(`${window.location.protocol}//${window.location.hostname}:5000/verify/${string.string}`)
             .then(res=>
                 {
                     console.log(res.data)
                     
                         showVerification(res.data.success);
+                        goToBottom()
                     
                 })
                 
@@ -132,6 +134,13 @@ const Page2=()=>{
 
     }
     
+
+    const goToBottom=()=>{
+
+        // window.scrollTo(0,document.body.scrollHeight);
+        ThisONe.current?.scrollIntoView({ behavior: "smooth" })
+        
+    }
 const showVerification=(condition)=>{
     setCondition(condition)
     let verification=document.querySelector(".table_data");
@@ -141,7 +150,7 @@ const showVerification=(condition)=>{
     return(<>
     
     {user?
-    <>
+    <div className="certificate_page"  >
     <div class="response page">
       
       <div class="div1 card ">
@@ -184,7 +193,7 @@ const showVerification=(condition)=>{
               </div>
           </div>
           <div className="buttonIs">
-              <button onClick={()=>{Click()}} className="btn icon_btn"><span class="Small material-icons">gavel</span><span>Verify</span></button>
+              <button onClick={()=>{Click();goToBottom()}} className="btn icon_btn"><span class="Small material-icons">gavel</span><span>Verify</span></button>
              
           </div>
       </div>
@@ -194,9 +203,9 @@ const showVerification=(condition)=>{
 <div className="timmer">
 <Anime/>
 </div>
-<div className="table_data">
-<center><h3>Verification</h3></center>
-        <ul>
+<div className="table_data" >
+<center><h3  ><a href="#gotoBottom">Verification</a></h3></center>
+        <ul id="gotoBottom">
             <li><h4>Fetching EnCrypted Hash from Blockchain</h4><span style={{color:"#4ED4FF"}} class="not Small material-icons">access_time_filled</span><span class="done Small material-icons" style={{color:"#AACC00"}}>check_circle</span></li>
             <li><h4>Fetching Document</h4><span style={{color:"#4ED4FF"}} class="not Small material-icons">access_time_filled</span><span class="done Small material-icons" style={{color:"#AACC00"}}>check_circle</span></li>
             <li><h4>Generating Hash and Comparing</h4><span style={{color:"#4ED4FF"}} class="not Small material-icons">access_time_filled</span><span class="done Small material-icons" style={{color:"#AACC00"}}>check_circle</span></li>
@@ -211,9 +220,11 @@ const showVerification=(condition)=>{
             <p>Invalid Document</p>
         </div>}
 </div>
-</>
+</div>
 :<div>Loading</div>}
-    </>);
+<div ref={ThisONe} style={{height:"200px"}} ></div>
+    </>
+    );
 
 
 }
