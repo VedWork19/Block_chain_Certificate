@@ -53,7 +53,7 @@ const createDate= async()=>{
         let hh = await factory.methods.addData(
             filehash,/*id */
             filehash/*pdf hash file*/
-          ).send({gas:'1000000' , from: accounts[0]}).on('transactionHash',async function(hash){
+          ).send({gas:'1000500' , from: accounts[0]}).on('transactionHash',async function(hash){
             //---------------------
             // code of DB
             // create row data and save
